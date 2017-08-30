@@ -9,9 +9,9 @@ body{
     font-size: 14px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
 }
 
 /**  header **/
@@ -23,22 +23,24 @@ header{
     font-size: 18px;
     font-weight: bold;
     background-color: #dddddd;
-    border: 1px solid #aaaaaa;
+    /*border: 1px solid #aaaaaa;*/
 }
 
 /** content   **/
 .content{
-    flex: 1;
+    /*flex: 1;*/
     display: flex;
     /*min-width: 300px;*/
     /*min-height: 500px;*/
 }
 .content-1{
     width: 200px;
-    background-color: #ddd;
+    background-color: #eee;
 }
 .content-2{
     width: 200px;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
     background-color: antiquewhite;
 }
 .content-3{

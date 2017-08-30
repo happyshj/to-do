@@ -1,14 +1,12 @@
-.content-1-count{
-    padding: 20px 10px;
-}
-.content-1-add{
+.content-2-add{
     height: 50px;
     line-height: 50px;
     padding-left: 10px;
     text-align: left;
+    background-color: #eeeeee;
     border-top: 1px solid #ddd;
 }
-.content-1-add .addImg{
+.content-2-add .addImg{
     width: 15px;
     height: 15px;
     vertical-align: middle;
