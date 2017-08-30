@@ -1,5 +1,5 @@
 import './content-1.css';
-import './../common/plus.png';
+import plusImg from './../common/plus.png';
 
 export default function content1() {
     // 统计
@@ -9,7 +9,8 @@ export default function content1() {
     // 列表
     // 底部
     let add = '<div class="content-1-add">'
-            +'<span>新建分类</span>'
+            +'<img src="'+plusImg+'" class="addImg">'
+            +'<span class="add">新增分类</span>'
             +'</div>';
     return count+add;
 }

@@ -8,6 +8,10 @@
 body{
     font-size: 14px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /**  header **/
@@ -24,9 +28,10 @@ header{
 
 /** content   **/
 .content{
+    flex: 1;
     display: flex;
-    min-width: 300px;
-    min-height: 500px;
+    /*min-width: 300px;*/
+    /*min-height: 500px;*/
 }
 .content-1{
     width: 200px;

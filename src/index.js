@@ -1,6 +1,16 @@
 import './style.css';
 import content1 from './content1/content-1';
 
+function Todo() {
+
+}
+Todo.prototype = {
+    init: function () {
+
+    }
+};
+
+
 // 总布局
 function all() {
     // 主容器
