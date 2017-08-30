@@ -1,8 +1,10 @@
 import './content-1.css';
 import plusImg from './../common/plus.png';
 import common from '../common/common';
+import tree from './tree/tree';
 
 let commonFn = new common();
+
 
 export default function content1() {
 
@@ -13,7 +15,7 @@ content1.prototype = {
         // 统计
         let count = '<div class="content-1-count">'
             +'<div>所有任务（<span id="count">11</span>）</div>'
-            +'<div class="content-1-list">aaa</div>'
+            +'<div class="content-1-list">'+new tree().treeHtml()+'</div>'
             +'</div>';
 
         // 底部
@@ -33,6 +35,9 @@ content1.prototype = {
             let size = commonFn.getPageSize();
             list.style.height = (commonFn.getPageSize().height - 101)+'px';
         });
+
+        // tree
+        new tree().init();
     }
 };
 
