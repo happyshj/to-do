@@ -11,15 +11,15 @@ export default function content2() {
 content2.prototype = {
     contentHtml: function () {
         // 统计
-        let count = '<div class="content-2-count">'
-            +'aaaaa'
-            +'</div>';
+        let count = `<div class="content-2-count">
+                           ${ `aaaaa`}
+                      </div>`;
 
         // 底部
-        let add = '<div class="content-2-add">'
-            +'<img src="'+plusImg+'" class="addImg">'
-            +'<span class="add">新增任务</span>'
-            +'</div>';
+        let add = `<div class="content-2-add">
+                       <img src="${plusImg}" class="addImg">
+                       <span class="add">新增任务</span>
+                    </div>`;
         return count+add;
     },
     init: function () {

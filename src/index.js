@@ -16,16 +16,18 @@ function all() {
     containerElement.classList.add('container');
 
     // header
-    let headerElement = '<header><span id="todoHeader" class="todo-header">Shj</span></header>';
+    let headerElement = `<header><span id="todoHeader" class="todo-header">Shj</span></header>`;
 
     // content
-    let contentElement = '<div class="content">'
-            +'<div class="content-1">'
-            +content1Element.content1Html()
-            +'</div>'
-            +'<div class="content-2">'+content2Element.contentHtml()+'</div>'
-            +'<div class="content-3">aaa</div>'
-        +'</div>';
+    let contentElement = `<div class="content">
+                              <div class="content-1">
+                                 ${content1Element.content1Html()}
+                              </div>
+                              <div class="content-2">
+                                  ${ content2Element.contentHtml()}
+                              </div>
+                              <div class="content-3">${`aaa`}</div>
+                           </div>`;
 
     containerElement.innerHTML = headerElement + contentElement;
 

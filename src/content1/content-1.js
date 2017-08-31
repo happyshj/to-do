@@ -13,16 +13,16 @@ export default function content1() {
 content1.prototype = {
     content1Html: function () {
         // 统计
-        let count = '<div class="content-1-count">'
-            +'<div>所有任务（<span id="count">11</span>）</div>'
-            +'<div class="content-1-list">'+new tree().treeHtml()+'</div>'
-            +'</div>';
+        let count = `<div class="content-1-count">
+                         <div>所有任务（<span id="count">11</span>）</div>
+                         <div class="content-1-list">${new tree().treeHtml()}</div>
+                     </div>`;
 
         // 底部
-        let add = '<div class="content-1-add">'
-            +'<img src="'+plusImg+'" class="addImg">'
-            +'<span class="add">新增分类</span>'
-            +'</div>';
+        let add = `<div class="content-1-add">
+                       <img src="${plusImg}" class="addImg">
+                       <span class="add">新增分类</span>
+                    </div>`;
         return count+add;
     },
     init: function () {

@@ -9,27 +9,28 @@ export default function tree() {
 tree.prototype = {
   treeHtml: function () {
       // 题目
-      let title = '<div class="cd-tree">分类列表</div>';
+      let title = `<div class="cd-tree">分类列表</div>`;
       // 树
-      let tree = '<div class="cv_fcv node">'
-              +'<div class="tree">默认分类</div>'
-              +'<ul class="node">'
-              +'<li>'
-              +'<div class="tree">IFE</div>'
-              +'<ul class="node">'
-              +'<li>'
-              +'<div class="tree">IFE</div>'
-              +'</li>'
-              +'</ul>'
-              +'</li>'
-              +'</ul>'
-              +'<div class="tree">默认分类</div>'
-              +'<ul class="node">'
-              +'<li>'
-              +'<div class="tree">IFE</div>'
-              +'</li>'
-              +'</ul>'
-              +'</div>';
+      let tree = `<div class="cv_fcv node">
+                      <div class="tree">默认分类</div>
+                      <ul class="node">
+                          <li>
+                             <div class="tree">IFE</div>
+                             <ul class="node">
+                               <li>
+                                 <div class="tree">IFE</div>
+                               </li>
+                             </ul>
+                          </li>
+                      </ul>
+                      
+                      <div class="tree">默认分类</div>
+                         <ul class="node">
+                           <li>
+                            <div class="tree">IFE</div>
+                          </li>
+                         </ul>
+                   </div>`;
       return title+tree;
   },
   init: function () {
