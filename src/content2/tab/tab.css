@@ -1,0 +1,32 @@
+.tab-title{
+    background-color: #eeeeee;
+    height: 40px;
+    line-height: 40px;
+}
+.tab-title li{
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 10px;
+    margin-left: 5px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+.tab-title li.tab-item-selected{
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+}
+.tab-content{
+    background-color: #ffffff;
+}
+.item-date{
+    background-color: #faebd7;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 10px;
+}
+.item-data-item{
+    height: 25px;
+    line-height: 25px;
+    padding-left: 20px;
+}

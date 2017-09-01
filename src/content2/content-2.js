@@ -1,8 +1,10 @@
 import './content-2.css';
 import plusImg from './../common/plus.png';
 import common from '../common/common';
+import tab from './tab/tab';
 
 let commonFn = new common();
+let tabElement = new tab();
 
 export default function content2() {
 
@@ -12,7 +14,7 @@ content2.prototype = {
     contentHtml: function () {
         // 统计
         let count = `<div class="content-2-count">
-                           ${ `aaaaa`}
+                           ${tabElement.tabHtml()}
                       </div>`;
 
         // 底部
@@ -32,5 +34,7 @@ content2.prototype = {
             let size = commonFn.getPageSize();
             list.style.height = (commonFn.getPageSize().height - 101)+'px';
         });
+
+        tabElement.init();
     }
 };
