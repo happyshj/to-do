@@ -25,7 +25,7 @@ content1.prototype = {
                       </div>
                       <ul class="node">
                           <li>
-                             <div class="tree">
+                             <div class="tree" data-uid="${1}">
                                  <img src="${treeImg}" class="icon-tree">  
                                  <span class="tree-name">IFE</span>
                                  (<span class="tree-count">11</span>)
@@ -40,34 +40,9 @@ content1.prototype = {
                                      <span class="tree-delete">X</span>
                                  </div>
                                </li>
-                               <li>
-                                 <div class="tree">
-                                     <img src="${treeImg}" class="icon-tree">
-                                     <span class="tree-name">IFE</span>
-                                     (<span class="tree-count">11</span>)
-                                     <span class="tree-delete">X</span>
-                                 </div>
-                               </li>
                              </ul>
                           </li>
                       </ul>
-                      
-                      <div class="tree">
-                          <img src="${treeImg}" class="icon-tree">
-                          <span class="tree-name">默认分类</span>
-                          (<span class="tree-count">11</span>)
-                          <span class="tree-delete">X</span>
-                      </div>
-                         <ul class="node">
-                           <li>
-                            <div class="tree">
-                                <img src="${treeImg}" class="icon-tree">
-                                <span class="tree-name">IFE</span>
-                                (<span class="tree-count">11</span>)
-                                <span class="tree-delete">X</span>
-                            </div>
-                          </li>
-                         </ul>
                    </div>`;
         // 统计
         let count = `<div class="content-1-count">
@@ -98,6 +73,9 @@ content1.prototype = {
     },
     init: function () {
         let that = this;
+        // 初始化数据
+
+
         // 初始化信息
         let list = document.querySelector('.content-1-count');
         list.style.height = (commonFn.getPageSize().height - 101)+'px';
