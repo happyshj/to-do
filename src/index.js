@@ -6,8 +6,51 @@ import completedImg from './imgs/completed.png';
 import editImg from './imgs/edit.png';
 import common from './common/common';
 
-let commonFn = new common();
 // 全局变量
+let commonFn = new common();
+// 存储所有节点
+let all_data = [
+    {
+        id: 1,
+        pid: 0,
+        name: "默认分类",
+        children: [{
+            id: 2,
+            pid: 1,
+            name: "提示",
+            children: []
+        }]
+    },
+];
+let temp_data = [
+    {
+        id: 1,
+        name: "默认分类",
+        pid: 0
+    },
+    {
+        id: 2,
+        name: "提示",
+        pid: 1
+    }
+];
+if(!localStorage.getItem('data')){
+    localStorage.setItem('data',JSON.stringify(temp_data));
+}
+
+// 存储所有任务
+let task_data = [
+    {
+        id: 1,
+        pid: 2,
+        name: "todo-1",
+        date: "2017-04-02",
+        status: 0,
+        content: "欢迎使用"
+    }
+];
+// 存储节点数量
+// let count = 2;
 
 // 总布局
 function all() {
@@ -23,24 +66,7 @@ function all() {
     // 题目
     let title = `<div class="cd-tree">分类列表</div>`;
     // 树
-    let tree = `<div class="cv_fcv node">
-                      <div class="tree">
-                           <img src="${treeImg}" class="icon-tree">
-                           <span class="tree-name">默认分类</span>
-                           (<span class="tree-count">1</span>)
-                           <span class="tree-delete">X</span>
-                      </div>
-                      <ul class="node">
-                          <li>
-                             <div class="tree" data-uid="${1}">
-                                 <img src="${treeImg}" class="icon-tree">  
-                                 <span class="tree-name">提示</span>
-                                 (<span class="tree-count">1</span>)
-                                 <span class="tree-delete">X</span>
-                             </div>
-                          </li>
-                      </ul>
-                   </div>`;
+    let tree = `<div class="cv_fcv node"></div>`;
     // 统计
     let content1_count = `<div class="content-1-count">
                          <div>所有任务（<span id="count">11</span>）</div>
@@ -117,124 +143,83 @@ function all() {
 // 初始界面
 document.body.appendChild(all());
 
-let todo_data = [
-   {
-        name: "默认分类",
-        selected: true,
-        pid: 0,
-        child: [
-             {
-                name: "提示",
-                selected: false,
-                pid:1,
-                child: [
-                    {
-                        name: "todo-1",
-                        date: "2017-05-01",
-                        status: 0,
-                        content: '欢迎使用'
-                    }
-                ]
-             }
-        ]
-    }
-];
-let str = '';
 function Content1() {
 
 }
 Content1.prototype = {
-    initTreeDom: function (array,str) {
-        let that = this;
-        // 根据数据初始化dom结构
-      //  console.log(array);
-       // let temp = '';
-        array.forEach(function (item, index, array) {
-            if(item.child){
-                // 是节点
-                if(item.pid === 1){
-                    str += '<li>';
-
-                }else {
-
-                }
-                str += `<div class="tree">
+    nodeToTree: function (array, idStr, pidStr, childrenStr) {
+       let r = [], hash = {}, len = array.length, id = idStr, pid = pidStr, children = childrenStr;
+       for(let i = 0; i < len; i ++){
+           hash[array[i][id]] = array[i];
+           hash[array[i][id]][children] = [];
+       }
+       for(let j = 0; j < len; j ++){
+           let aVal = array[j], hashVP = hash[aVal[pid]];
+           if(hashVP){
+               if(!hashVP[children]){
+                   hashVP[children] = [];
+               }
+               hashVP[children].push(aVal);
+           }else {
+               r.push(aVal);
+           }
+       }
+        return r;
+    },
+    initTreeDom:function (array) {
+    let str = '';
+    let that = this;
+    for(let i = 0; i < array.length; i++){
+        if(array[i].pid !== 0){
+            str += `<li>`;
+        }
+        if(array[i].children.length > 0){
+            // 有子元素
+            str += `<div class="tree" data-nid="${array[i].id}">
                                  <img src="${treeImg}" class="icon-tree">
-                                 <span class="tree-name">${item.name}</span>
+                                 <span class="tree-name">${array[i].name}</span>
                                 (<span class="tree-count">0</span>)
                                  <span class="tree-delete">X</span>
                          </div>`;
-
-                let flag = item.child.some(function (item,index,array) {
-                    return item.child
-                });
-                if(flag){
-                    // 有子节点
-                    str += `<ul class="node">`;
-
-                    that.initTreeDom(item.child,str);
-
-                   // str += `</ul>`
-                }else {
-                    // 没有子节点
-                }
-                if(item.pid){
-                    str += '</li>';
-
-                }else {
-
-                }
-                console.log(str)
-                // 当前节点为最后一个子节点，添加</ul>
-                if(index === array.length - 1){
-                    str += `</ul>`;
-                   // console.log(str)
-                }
-            }else {
-                // 文本节点
-
+            str += `<ul class="node">`;
+            str += that.initTreeDom(array[i].children, str);
+        }else {
+            str += `<div class="tree" data-nid="${array[i].id}">
+                                 <img src="${nodeImg}" class="icon-tree">
+                                 <span class="tree-name">${array[i].name}</span>
+                                (<span class="tree-count">0</span>)
+                                 <span class="tree-delete">X</span>
+                         </div>`;
+        }
+        if(array[i].pid !== 0){
+            str += `</li>`;
+            if(i === array.length -1){
+                str += `</ul>`;
             }
-        });
-
-    },
-    initTree: function () {
-        /* 初始化图片 */
-        let trees = document.getElementsByClassName('tree');
-        [...trees].forEach(function (item,index,array) {
-            let nextE = item.nextElementSibling;
-            let imgElement = item.querySelector('.icon-tree');
-            if(!nextE || nextE.nodeName.toLowerCase() !== 'ul'){
-                // 添加tree图片
-                imgElement.src = nodeImg;
-            }else {
-                imgElement.src = treeImg;
-            }
-        });
-    },
+        }
+    }
+    return str;
+},
     init: function () {
         let that = this;
-        // let str = 'aaa';
-        that.initTreeDom(todo_data,str);
-        console.log(str);
-
         // 初始化信息
         let list = document.querySelector('.content-1-count');
         list.style.height = (commonFn.getPageSize().height - 101)+'px';
-
         // 监听resize事件
         commonFn.addHandler(window, 'resize', function () {
             let size = commonFn.getPageSize();
             list.style.height = (commonFn.getPageSize().height - 101)+'px';
         });
 
-        // tree
-        let trees = document.getElementsByClassName('tree');
-        let cdTree = document.querySelector('.cd-tree');
-        /* 初始化图片 */
-        that.initTree();
+        let tree = document.getElementsByClassName('cv_fcv')[0]; // 总分类
+
+        let a = JSON.parse(localStorage.getItem('data'));
+        tree.innerHTML = that.initTreeDom(that.nodeToTree(a,'id','pid','children')); // 初始化DOM tree
+
+        let trees = document.getElementsByClassName('tree'),// 所有树节点
+        cdTree = document.querySelector('.cd-tree'); // 分类列表
 
         /* 展开与合并、删除、点击添加选中标志*/
-        let tree = document.querySelector('.cv_fcv');
         commonFn.addHandler(tree,'click',function (e) {
             // 先判断是删除还是合并
             if(e.target.classList.contains('tree-delete')){
@@ -242,42 +227,29 @@ Content1.prototype = {
                 e.stopPropagation();
                 let flag = confirm('确定删除该分类吗？');
                 if(flag){
-                    // 删除自身tree，及后面的ul
-                    let treeE = e.target.parentNode; // tree,div
-                    let nextE = treeE.nextElementSibling;
-
-                    // 若其父元素只有其一个节点，删除完整节点
-                    if(treeE.parentNode.nodeName.toLowerCase() === 'li'){
-                        let tempNext = treeE.parentNode.nextElementSibling; //li
-                        let tempPrev = treeE.parentNode.previousElementSibling;
-                        if(!tempNext && !tempPrev){
-                            treeE.parentNode.parentNode.parentNode.removeChild(treeE.parentNode.parentNode); // 删掉ul
-                        }else {
-                            // 不是一个节点
-                            treeE.parentNode.parentNode.removeChild(treeE.parentNode);
-                        }
-                    }else {
-                        if(nextE && nextE.nodeName.toLowerCase() === 'ul'){
-                            nextE.parentNode.removeChild(nextE);
-                        }
-                        treeE.parentNode.removeChild(treeE);
-                    }
+                    let treeE = e.target.parentNode, // 要删除的tree节点
+                         nid = parseInt(treeE.dataset.nid),// 删除的节点id
+                         dataTemp = JSON.parse(localStorage.getItem('data'));
+                    dataTemp = dataTemp.filter(function (item,index,array) {
+                        console.log(item.id != nid);
+                        return item.id != nid;
+                    });
+                    tree.innerHTML = that.initTreeDom(that.nodeToTree(dataTemp,'id','pid','children'));
+                    localStorage.setItem('data',JSON.stringify(dataTemp)); // 存储数值
                 }
-                that.initTree();
             }else {
-                // 展开与合并
                 // 点击，若有子元素，且隐藏，则展开；若展开，则隐藏
-                let nextElement = e.target.nextElementSibling;
                 let selectedElement = e.target;
                 if(!e.target.classList.contains('tree')){
-                    nextElement = e.target.parentNode.nextElementSibling;
                     selectedElement = e.target.parentNode;
                 }
-                if(nextElement){
-                    if(nextElement.style.display == 'none'){
-                        nextElement.style.display = 'block';
+
+                let nextE = selectedElement.nextElementSibling;
+                if(nextE && nextE.nodeName.toLocaleLowerCase() === 'ul'){
+                    if(nextE.style.display === 'none'){
+                        nextE.style.display = 'block';
                     }else {
-                        nextElement.style.display = 'none'
+                        nextE.style.display = 'none';
                     }
                 }
 
@@ -317,70 +289,60 @@ Content1.prototype = {
         let addList = document.querySelector('.content-1-add');
         commonFn.addHandler(addList,'click',function (e) {
             e.stopPropagation();
-
             let listName = prompt('请输入分类名：');
             if(listName){
-                // 查找被选中分类
-                let treesE = document.querySelectorAll('.tree');
-                let treeSelected = [...treesE].filter(function (item,index,array) {
-                    return item.classList.contains('tree-selected');
-                });
-                // 为该分类添加新的分类
-                if(treeSelected.length > 0){
-                    let element = treeSelected[0];
-                    if(element.nextElementSibling){
-                        // 若已经有子元素
-                        let addTreeE = ` <li>
-                                 <div class="tree">
-                                     <img src="${treeImg}" class="icon-tree">
-                                     <span class="tree-name">${listName}</span>
-                                     (<span class="tree-count">0</span>)
-                                     <span class="tree-delete">X</span>
-                                 </div>
-                               </li>`;
-                        element.nextElementSibling.innerHTML += addTreeE;
-
-                        // 添加子元素，count为0；增加到数据里
-
-                    }else {
-                        // 若没有子元素
-                        let addTreeE = `<ul class="node">
-                                      <li>
-                                        <div class="tree">
-                                         <img src="${treeImg}" class="icon-tree"> 
-                                          <span class="tree-name">${listName}</span>
-                                         (<span class="tree-count">0</span>)
-                                         <span class="tree-delete">X</span>
-                                         </div>
-                                       </li>
-                                     </ul>`;
-                        element.parentNode.innerHTML += addTreeE;
-                    }
-                    // 提示添加成功
-                    alert('添加成功！！');
-                    // 展开该分类
-                    if(element.nextElementSibling){
-                        element.nextElementSibling.style.display = 'block';
-                    }
-                    // 初始化分类
-                    that.initTree();
+                // 查找被选中分类,1.判断分类列表被选中
+                // 2.获取此时data值，给它添加元素，再存储
+                let dataTemp = JSON.parse(localStorage.getItem('data')), // 此时的dataTemp值
+                    lenTemp = dataTemp.length;
+                if(cdTree.classList.contains('tree-selected')){
+                    tree.innerHTML += `<div class="tree" data-nid="${lenTemp + 1}">
+                                 <img src="${nodeImg}" class="icon-tree">
+                                 <span class="tree-name">${listName}</span>
+                                (<span class="tree-count">0</span>)
+                                 <span class="tree-delete">X</span>
+                         </div>`;
+                    let temp = {
+                        id: lenTemp + 1,
+                        name: listName,
+                        pid: cdTree.dataset.nid,
+                    };
+                    dataTemp.push(temp);
+                    localStorage.setItem('data',JSON.stringify(dataTemp));// 存储数据值
                 }else {
-                    if(cdTree.classList.contains('tree-selected')){
-                        // 添加总分类
-                        let addTreeE = `<div class="tree">
-                          <img src="${treeImg}" class="icon-tree">
-                          <span class="tree-name">${listName}</span>
-                          (<span class="tree-count">0</span>)
-                          <span class="tree-delete">X</span>
-                      </div>`;
-                        tree.innerHTML += addTreeE;
-                        // 提示添加成功
-                        alert('添加成功！！');
-                        that.initTree();
-                    }else {
-                        alert('没有分类被选中！！！');
+                   // 3.分类节点被选中，遍历树节点，查找到被选中的节点
+                    for(let i = 0, len = trees.length; i < len; i ++){
+                        if(trees[i].classList.contains('tree-selected')){
+                            let nextE = trees[i].nextElementSibling;
+                            if(nextE && nextE.nodeName.toLocaleLowerCase() === 'ul'){
+                               nextE.innerHTML += `<li><div class="tree" data-nid="${lenTemp + 1}">
+                                 <img src="${nodeImg}" class="icon-tree">
+                                 <span class="tree-name">${listName}</span>
+                                (<span class="tree-count">0</span>)
+                                 <span class="tree-delete">X</span>
+                         </div></li>`;
+                            }else {
+                                // 没有子元素
+                                trees[i].parentNode.innerHTML += `<ul class="node"><li><div class="tree" data-nid="${lenTemp + 1}">
+                                 <img src="${nodeImg}" class="icon-tree">
+                                 <span class="tree-name">${listName}</span>
+                                (<span class="tree-count">0</span>)
+                                 <span class="tree-delete">X</span>
+                         </div></li></ul>`
+                            }
+                            let temp = {
+                                id: lenTemp + 1,
+                                name: listName,
+                                pid: trees[i].dataset.nid,
+                            };
+                            dataTemp.push(temp);
+                            localStorage.setItem('data',JSON.stringify(dataTemp));// 存储数据值
+                            break;
+                        }
                     }
                 }
+                // 提示添加成功
+                alert('添加成功！！');
             }
         });
     }
